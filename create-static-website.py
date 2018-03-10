@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import boto3
-import botocore
 
 BUCKET_WEBSITE = 'static.brendonkwan.com'
 INDEX_FILE = 'static-website/index.txt'
