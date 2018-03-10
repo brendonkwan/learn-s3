@@ -13,9 +13,7 @@ REGION = 'ap-southeast-2'
 s3 = boto3.resource('s3')
 
 print('Creating bucket website "%s".' % (BUCKET_WEBSITE))
-
 bucket_website = s3.BucketWebsite(BUCKET_WEBSITE)
-
 try:
     bucket_website.Bucket().create(
         CreateBucketConfiguration={
@@ -27,7 +25,6 @@ except Exception as e:
     
 print('Setting index document to key "%s" and error document to key "%s".' %
     (INDEX_KEY, ERROR_KEY))
-
 bucket_website.put(
     WebsiteConfiguration={
         'IndexDocument': {'Suffix': INDEX_KEY},
@@ -35,15 +32,23 @@ bucket_website.put(
     }
 )
 
-print('Make the bucket''s contents publicly readable')
+print('Making the bucket''s contents private')
+bucket_website.Bucket().Acl().put(ACL='private')
 
-bucket_website.Bucket().Acl().put(ACL='public-read')
+print('Uploading index file "%s" to public key "%s".' % (INDEX_FILE, INDEX_KEY))
+bucket_website.Bucket().put_object(
+    ACL='public-read',
+    Body=open(INDEX_FILE, 'rb'),
+    Key=INDEX_KEY
+)
 
-print('Uploading index file "%s" to key "%s".' % (INDEX_FILE, INDEX_KEY))
-bucket_website.Bucket().upload_file(INDEX_FILE, INDEX_KEY)
+print('Uploading error file "%s" to public key "%s".' % (ERROR_FILE, ERROR_KEY))
+bucket_website.Bucket().put_object(
+    ACL='public-read',
+    Body=open(ERROR_FILE, 'rb'),
+    Key=ERROR_KEY
+)
 
-print('Uploading error file "%s" to key "%s".' % (ERROR_FILE, ERROR_KEY))
-bucket_website.Bucket().upload_file(ERROR_FILE, ERROR_KEY)
-
-print('Static website is available at http://%s.s3-website.%s.aws.amazon.com' %
-    (BUCKET_WEBSITE, REGION))
+print('Static website is available at http://%s.s3-website-%s.amazonaws.com' %
+    (BUCKET_WEBSITE, REGION)
+)
