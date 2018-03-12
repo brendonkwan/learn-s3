@@ -5,7 +5,7 @@ Python scripts that call the following S3 operations:
 * Create an empty bucket
 * Upload a file to a bucket
 * Download a file from a bucket
-* Create a new bucket for hosting a static website
+* Create a bucket that hosts a static website
 * List the keys of a bucket
 * Delete one or more buckets
 
