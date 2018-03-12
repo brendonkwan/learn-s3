@@ -3,10 +3,10 @@
 import boto3
 
 BUCKET_WEBSITE = 'static.brendonkwan.com'
-INDEX_FILE = 'static-website/index.txt'
-INDEX_KEY = 'index.txt'
-ERROR_FILE = 'static-website/error.txt'
-ERROR_KEY = 'error.txt'
+INDEX_FILE = 'static-website/index.html'
+INDEX_KEY = 'index.html'
+ERROR_FILE = 'static-website/error.html'
+ERROR_KEY = 'error.html'
 REGION = 'ap-southeast-2'
 
 s3 = boto3.resource('s3')
@@ -31,13 +31,11 @@ bucket_website.put(
     }
 )
 
-print('Making the bucket''s contents private')
-bucket_website.Bucket().Acl().put(ACL='private')
-
 print('Uploading index file "%s" to public key "%s".' % (INDEX_FILE, INDEX_KEY))
 bucket_website.Bucket().put_object(
     ACL='public-read',
     Body=open(INDEX_FILE, 'rb'),
+    ContentType='text/html',
     Key=INDEX_KEY
 )
 
@@ -45,6 +43,7 @@ print('Uploading error file "%s" to public key "%s".' % (ERROR_FILE, ERROR_KEY))
 bucket_website.Bucket().put_object(
     ACL='public-read',
     Body=open(ERROR_FILE, 'rb'),
+    ContentType='text/html',
     Key=ERROR_KEY
 )
 
