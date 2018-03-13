@@ -9,11 +9,6 @@ Python scripts that call the following S3 operations:
 * List the keys of a bucket
 * Delete one or more buckets
 
-TODO:
-
-* Make all scripts take the bucket's name as a command-line argument
-* Search for and replace all 'TODO' comments in the code
-
 References:
 
 * [Amazon S3 Examples page](https://boto3.readthedocs.io/en/latest/guide/s3-examples.html)
